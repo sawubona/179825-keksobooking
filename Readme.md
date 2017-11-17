@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Максим Мамонтов](https://up.htmlacademy.ru/javascript/11/user/179825).
-* Наставник: `Неизвестно`.
+* Наставник: `Ренат Туктаров`.
 
 ---
 
