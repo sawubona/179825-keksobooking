@@ -3,6 +3,7 @@
 const map = document.querySelector('.map');
 const mapWrapper = document.querySelector('.map__pins');
 const formElements = document.querySelectorAll('fieldset');
+const noticeForm = document.querySelector('.notice__form');
 
 const randomInteger = (arr) => {
   let rand = arr[0] + Math.random() * (arr[1] + 1 - arr[0]);
@@ -38,14 +39,14 @@ const mapData = {
   'img/avatars/user06.png', 
   'img/avatars/user07.png', 
   'img/avatars/user08.png'],
-  title: ["Большая уютная квартира", 
-  "Маленькая неуютная квартира", 
-  "Огромный прекрасный дворец", 
-  "Маленький ужасный дворец", 
-  "Красивый гостевой домик", 
-  "Некрасивый негостеприимный домик", 
-  "Уютное бунгало далеко от моря", 
-  "Неуютное бунгало по колено в воде"],
+  title: ['Большая уютная квартира', 
+  'Маленькая неуютная квартира', 
+  'Огромный прекрасный дворец', 
+  'Маленький ужасный дворец', 
+  'Красивый гостевой домик', 
+  'Некрасивый негостеприимный домик', 
+  'Уютное бунгало далеко от моря', 
+  'Неуютное бунгало по колено в воде'],
   address: [], 
   price: [1000, 1000000],
   type: ['flat', 'house', 'bungalo'],
@@ -53,7 +54,7 @@ const mapData = {
   guests: [1, 15],
   checkin: ['12:00', '13:00', '14:00'], 
   checkout: ['12:00', '13:00', '14:00'], 
-  features: ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"],
+  features: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
   description: [],
   photos: [],
   locations: [
@@ -63,7 +64,6 @@ const mapData = {
 };
 
 const createButtons = () => {
-  const map = document.querySelector('.map');
   const mapFilter = document.querySelector('.map__filters-container');
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < mapData.avatar.length; i++) {
@@ -133,9 +133,10 @@ const toggleForm = (list, state) => {
 
 toggleForm(formElements, 'off');
 
-const activateFormMap = () => {
+const activateFormMap = (targetbtn) => {
   map.classList.remove('map--faded');
   createButtons();
+  targetbtn.classList.add('active');
   toggleForm(formElements, 'on');
 };
 
@@ -167,8 +168,8 @@ const mainpinMouseHandler = (event) => {
   let button = target.closest('button');
   if (!button) return;
   if (!map.contains(button)) return;
-  if (button.classList.contains('map__pin--main')) {
-    activateFormMap();
+  if (button.classList.contains('map__pin--main') && !button.classList.contains('active')) {
+    activateFormMap(button);
   }
   if (button.classList.contains('map__pin') && !button.classList.contains('map__pin--main')) {
     let allButton = Array.prototype.slice.call(document.querySelectorAll('.map__pin'));
@@ -193,8 +194,8 @@ const mainpinTabHandler = (event) => {
   if (!button) return;
   if (!map.contains(button)) return;
   if (event.keyCode === 13) {
-    if (button.classList.contains('map__pin--main')) {
-      activateFormMap();
+    if (button.classList.contains('map__pin--main') && !button.classList.contains('active')) {
+      activateFormMap(button);
     }
     if (button.classList.contains('map__pin') && !button.classList.contains('map__pin--main')) {
       let allButton = Array.prototype.slice.call(document.querySelectorAll('.map__pin'));
@@ -211,5 +212,78 @@ const mainpinTabHandler = (event) => {
   }
 };
 
+const changeHandler = (event) => {
+  let target = event.target;
+  if (target.id === 'type') {
+    if (target.selectedIndex === 0) {
+      price.min = 1000;
+    }
+    if (target.selectedIndex === 1) {
+      price.min = 0;
+    }
+    if (target.selectedIndex === 2) {
+      price.min = 5000;
+    }
+    if (target.selectedIndex === 3) {
+      price.min = 10000;
+    }
+  };
+  if (target.id === 'timein') {
+    let optionSelected = timeout;
+    for (let i = 0; i < optionSelected.length; i++) {
+      const selected = optionSelected[i];
+      selected.removeAttribute('selected', '');
+    }
+    timeout[target.selectedIndex].setAttribute('selected', '');
+  };
+  if (target.id === 'room_number') {
+    let optionSelected = capacity;
+    for (let i = 0; i < optionSelected.length; i++) {
+      const selected = optionSelected[i];
+      selected.removeAttribute('selected', '');
+    }
+    if (target.value === '1') {
+      optionSelected[2].setAttribute('selected', '');
+    }
+    if (target.value === '2') {
+      optionSelected[1].setAttribute('selected', '');
+    }
+    if (target.value === '3') {
+      optionSelected[0].setAttribute('selected', '');
+    }
+    if (target.value === '100') {
+      optionSelected[3].setAttribute('selected', '');
+    }
+  };
+};
+
+const formHandler = (event) => {
+  let target = event.target;
+  let option = target.closest('select');
+  if (!option) return;
+  option.addEventListener('change', changeHandler);
+};
+
+const formValid = (event) => {
+  let inputs = noticeForm.querySelectorAll('input');
+  for (let i = 0; i < inputs.length; i++) {
+    const element = inputs[i];
+    if (element.id === 'address' && element.value === '') {
+      element.style.border = '2px solid red';
+      event.preventDefault();
+    }
+    if (element.id === 'title' && element.value.length < 30) {
+      element.style.border = '2px solid red';
+      event.preventDefault();
+    }
+    if (element.id === 'price' && element.value.length < 0) {
+      element.style.border = '2px solid red';
+      event.preventDefault();
+    }
+  }
+};
+
 map.addEventListener('mouseup', mainpinMouseHandler);
 map.addEventListener('keydown', mainpinTabHandler);
+noticeForm.addEventListener('mouseup', formHandler);
+noticeForm.addEventListener('submit', formValid);
