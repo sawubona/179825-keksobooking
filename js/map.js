@@ -32,21 +32,21 @@ const randomString = (arr) => {
 
 const mapData = {
   avatar: ['img/avatars/user01.png', 
-  'img/avatars/user02.png', 
-  'img/avatars/user03.png', 
-  'img/avatars/user04.png', 
-  'img/avatars/user05.png', 
-  'img/avatars/user06.png', 
-  'img/avatars/user07.png', 
-  'img/avatars/user08.png'],
+    'img/avatars/user02.png', 
+    'img/avatars/user03.png', 
+    'img/avatars/user04.png', 
+    'img/avatars/user05.png', 
+    'img/avatars/user06.png', 
+    'img/avatars/user07.png', 
+    'img/avatars/user08.png'],
   title: ['Большая уютная квартира', 
-  'Маленькая неуютная квартира', 
-  'Огромный прекрасный дворец', 
-  'Маленький ужасный дворец', 
-  'Красивый гостевой домик', 
-  'Некрасивый негостеприимный домик', 
-  'Уютное бунгало далеко от моря', 
-  'Неуютное бунгало по колено в воде'],
+    'Маленькая неуютная квартира', 
+    'Огромный прекрасный дворец', 
+    'Маленький ужасный дворец', 
+    'Красивый гостевой домик', 
+    'Некрасивый негостеприимный домик', 
+    'Уютное бунгало далеко от моря', 
+    'Неуютное бунгало по колено в воде'],
   address: [], 
   price: [1000, 1000000],
   type: ['flat', 'house', 'bungalo'],
@@ -205,9 +205,56 @@ const mainpinTabHandler = (event) => {
       closePin();
     }
   }
-  if(event.keyCode === 27) {
+  if (event.keyCode === 27) {
     if (button.classList.contains('map__pin--active')) {
       closePin();
+    }
+  }
+};
+
+const syncroTime = (master, slave) => {
+  slave.selectedIndex = -1;
+  for (let i = 0; i < master.options.length; i++) {
+    const element = master.options[i];
+    if (element.selected) {
+      slave.selectedIndex = element.index;
+    }
+  }
+};
+
+const syncroRoom = (master, slave) => {
+  slave.selectedIndex = -1;
+  for (let i = 0; i < master.options.length; i++) {
+    const element = master.options[i];
+    if (element.selected) {
+      if (element.index === 0) {
+        slave.selectedIndex = 2;
+        slave.options[0].setAttribute('disabled', '');
+        slave.options[1].setAttribute('disabled', '');
+        slave.options[3].setAttribute('disabled', '');
+        slave.options[2].removeAttribute('disabled', '');
+      }
+      if (element.index === 1) {
+        slave.selectedIndex = 1;
+        slave.options[0].setAttribute('disabled', '');
+        slave.options[3].setAttribute('disabled', '');
+        slave.options[2].removeAttribute('disabled', '');
+        slave.options[1].removeAttribute('disabled', '');
+      }
+      if (element.index === 2) {
+        slave.selectedIndex = 0;
+        slave.options[3].setAttribute('disabled', '');
+        slave.options[0].removeAttribute('disabled', '');
+        slave.options[1].removeAttribute('disabled', '');
+        slave.options[2].removeAttribute('disabled', '');
+      }
+      if (element.index === 3) {
+        slave.selectedIndex = 3;
+        slave.options[0].setAttribute('disabled', '');
+        slave.options[1].setAttribute('disabled', '');
+        slave.options[2].setAttribute('disabled', '');
+        slave.options[3].removeAttribute('disabled', '');
+      }
     }
   }
 };
@@ -229,31 +276,13 @@ const changeHandler = (event) => {
     }
   };
   if (target.id === 'timein') {
-    let optionSelected = timeout;
-    for (let i = 0; i < optionSelected.length; i++) {
-      const selected = optionSelected[i];
-      selected.removeAttribute('selected', '');
-    }
-    timeout[target.selectedIndex].setAttribute('selected', '');
+    syncroTime(target, timeout);
+  };
+  if (target.id === 'timeout') {
+    syncroTime(target, timein);
   };
   if (target.id === 'room_number') {
-    let optionSelected = capacity;
-    for (let i = 0; i < optionSelected.length; i++) {
-      const selected = optionSelected[i];
-      selected.removeAttribute('selected', '');
-    }
-    if (target.value === '1') {
-      optionSelected[2].setAttribute('selected', '');
-    }
-    if (target.value === '2') {
-      optionSelected[1].setAttribute('selected', '');
-    }
-    if (target.value === '3') {
-      optionSelected[0].setAttribute('selected', '');
-    }
-    if (target.value === '100') {
-      optionSelected[3].setAttribute('selected', '');
-    }
+    syncroRoom(target, capacity);
   };
 };
 
