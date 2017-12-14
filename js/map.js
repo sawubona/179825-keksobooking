@@ -3,6 +3,7 @@
 const map = document.querySelector('.map');
 const mapWrapper = document.querySelector('.map__pins');
 const formElements = document.querySelectorAll('fieldset');
+const noticeForm = document.querySelector('.notice__form');
 
 const randomInteger = (arr) => {
   let rand = arr[0] + Math.random() * (arr[1] + 1 - arr[0]);
@@ -31,21 +32,21 @@ const randomString = (arr) => {
 
 const mapData = {
   avatar: ['img/avatars/user01.png', 
-  'img/avatars/user02.png', 
-  'img/avatars/user03.png', 
-  'img/avatars/user04.png', 
-  'img/avatars/user05.png', 
-  'img/avatars/user06.png', 
-  'img/avatars/user07.png', 
-  'img/avatars/user08.png'],
-  title: ["Большая уютная квартира", 
-  "Маленькая неуютная квартира", 
-  "Огромный прекрасный дворец", 
-  "Маленький ужасный дворец", 
-  "Красивый гостевой домик", 
-  "Некрасивый негостеприимный домик", 
-  "Уютное бунгало далеко от моря", 
-  "Неуютное бунгало по колено в воде"],
+    'img/avatars/user02.png', 
+    'img/avatars/user03.png', 
+    'img/avatars/user04.png', 
+    'img/avatars/user05.png', 
+    'img/avatars/user06.png', 
+    'img/avatars/user07.png', 
+    'img/avatars/user08.png'],
+  title: ['Большая уютная квартира', 
+    'Маленькая неуютная квартира', 
+    'Огромный прекрасный дворец', 
+    'Маленький ужасный дворец', 
+    'Красивый гостевой домик', 
+    'Некрасивый негостеприимный домик', 
+    'Уютное бунгало далеко от моря', 
+    'Неуютное бунгало по колено в воде'],
   address: [], 
   price: [1000, 1000000],
   type: ['flat', 'house', 'bungalo'],
@@ -53,7 +54,7 @@ const mapData = {
   guests: [1, 15],
   checkin: ['12:00', '13:00', '14:00'], 
   checkout: ['12:00', '13:00', '14:00'], 
-  features: ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"],
+  features: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
   description: [],
   photos: [],
   locations: [
@@ -63,7 +64,6 @@ const mapData = {
 };
 
 const createButtons = () => {
-  const map = document.querySelector('.map');
   const mapFilter = document.querySelector('.map__filters-container');
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < mapData.avatar.length; i++) {
@@ -133,9 +133,10 @@ const toggleForm = (list, state) => {
 
 toggleForm(formElements, 'off');
 
-const activateFormMap = () => {
+const activateFormMap = (targetbtn) => {
   map.classList.remove('map--faded');
   createButtons();
+  targetbtn.classList.add('active');
   toggleForm(formElements, 'on');
 };
 
@@ -167,8 +168,8 @@ const mainpinMouseHandler = (event) => {
   let button = target.closest('button');
   if (!button) return;
   if (!map.contains(button)) return;
-  if (button.classList.contains('map__pin--main')) {
-    activateFormMap();
+  if (button.classList.contains('map__pin--main') && !button.classList.contains('active')) {
+    activateFormMap(button);
   }
   if (button.classList.contains('map__pin') && !button.classList.contains('map__pin--main')) {
     let allButton = Array.prototype.slice.call(document.querySelectorAll('.map__pin'));
@@ -193,8 +194,8 @@ const mainpinTabHandler = (event) => {
   if (!button) return;
   if (!map.contains(button)) return;
   if (event.keyCode === 13) {
-    if (button.classList.contains('map__pin--main')) {
-      activateFormMap();
+    if (button.classList.contains('map__pin--main') && !button.classList.contains('active')) {
+      activateFormMap(button);
     }
     if (button.classList.contains('map__pin') && !button.classList.contains('map__pin--main')) {
       let allButton = Array.prototype.slice.call(document.querySelectorAll('.map__pin'));
@@ -204,12 +205,114 @@ const mainpinTabHandler = (event) => {
       closePin();
     }
   }
-  if(event.keyCode === 27) {
+  if (event.keyCode === 27) {
     if (button.classList.contains('map__pin--active')) {
       closePin();
     }
   }
 };
 
+const syncroTime = (master, slave) => {
+  slave.selectedIndex = -1;
+  for (let i = 0; i < master.options.length; i++) {
+    const element = master.options[i];
+    if (element.selected) {
+      slave.selectedIndex = element.index;
+    }
+  }
+};
+
+const syncroRoom = (master, slave) => {
+  slave.selectedIndex = -1;
+  for (let i = 0; i < master.options.length; i++) {
+    const element = master.options[i];
+    if (element.selected) {
+      if (element.index === 0) {
+        slave.selectedIndex = 2;
+        slave.options[0].setAttribute('disabled', '');
+        slave.options[1].setAttribute('disabled', '');
+        slave.options[3].setAttribute('disabled', '');
+        slave.options[2].removeAttribute('disabled', '');
+      }
+      if (element.index === 1) {
+        slave.selectedIndex = 1;
+        slave.options[0].setAttribute('disabled', '');
+        slave.options[3].setAttribute('disabled', '');
+        slave.options[2].removeAttribute('disabled', '');
+        slave.options[1].removeAttribute('disabled', '');
+      }
+      if (element.index === 2) {
+        slave.selectedIndex = 0;
+        slave.options[3].setAttribute('disabled', '');
+        slave.options[0].removeAttribute('disabled', '');
+        slave.options[1].removeAttribute('disabled', '');
+        slave.options[2].removeAttribute('disabled', '');
+      }
+      if (element.index === 3) {
+        slave.selectedIndex = 3;
+        slave.options[0].setAttribute('disabled', '');
+        slave.options[1].setAttribute('disabled', '');
+        slave.options[2].setAttribute('disabled', '');
+        slave.options[3].removeAttribute('disabled', '');
+      }
+    }
+  }
+};
+
+const changeHandler = (event) => {
+  let target = event.target;
+  if (target.id === 'type') {
+    if (target.selectedIndex === 0) {
+      price.min = 1000;
+    }
+    if (target.selectedIndex === 1) {
+      price.min = 0;
+    }
+    if (target.selectedIndex === 2) {
+      price.min = 5000;
+    }
+    if (target.selectedIndex === 3) {
+      price.min = 10000;
+    }
+  };
+  if (target.id === 'timein') {
+    syncroTime(target, timeout);
+  };
+  if (target.id === 'timeout') {
+    syncroTime(target, timein);
+  };
+  if (target.id === 'room_number') {
+    syncroRoom(target, capacity);
+  };
+};
+
+const formHandler = (event) => {
+  let target = event.target;
+  let option = target.closest('select');
+  if (!option) return;
+  option.addEventListener('change', changeHandler);
+};
+
+const formValid = (event) => {
+  let inputs = noticeForm.querySelectorAll('input');
+  for (let i = 0; i < inputs.length; i++) {
+    const element = inputs[i];
+    if (element.id === 'address' && element.value === '') {
+      element.style.border = '2px solid red';
+      event.preventDefault();
+    }
+    if (element.id === 'title' && element.value.length < 30) {
+      element.style.border = '2px solid red';
+      event.preventDefault();
+    }
+    if (element.id === 'price' && element.value.length < 0) {
+      element.style.border = '2px solid red';
+      event.preventDefault();
+    }
+  }
+};
+
 map.addEventListener('mouseup', mainpinMouseHandler);
 map.addEventListener('keydown', mainpinTabHandler);
+noticeForm.addEventListener('mouseup', formHandler);
+noticeForm.addEventListener('submit', formValid);
