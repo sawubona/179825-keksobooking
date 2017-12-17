@@ -39,6 +39,6 @@ window.map = (() => {
   window.mapdata.noticeForm.addEventListener('mouseup', window.formaction.formHandler);
   window.mapdata.noticeForm.addEventListener('submit', window.formaction.formValid);
 
-  return { dragButton: dragButton };
+  return { dragObj: dragObj };
 
 })();
