@@ -1,6 +1,7 @@
 'use strict';
 
 window.card = (() => {
+
   const createFeatureList = () => {
     let featuresArr = window.utils.randomStrings(window.mapdata.mapData.features);
     let featuresFragment = document.createDocumentFragment();

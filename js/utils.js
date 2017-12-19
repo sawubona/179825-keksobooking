@@ -1,6 +1,7 @@
 'use strict';
 
 window.utils = (() => {
+
   const randomInteger = (arr) => {
     let rand = arr[0] + Math.random() * (arr[1] + 1 - arr[0]);
     rand = Math.floor(rand);
@@ -26,16 +27,6 @@ window.utils = (() => {
     }
   };
 
-  const syncroTime = (master, slave) => {
-    slave.selectedIndex = -1;
-    for (let i = 0; i < master.options.length; i++) {
-      const element = master.options[i];
-      if (element.selected) {
-        slave.selectedIndex = element.index;
-      }
-    }
-  };
-
   const targetDragLimiter = (cordOut, cordIn, limitmin, limitmax) => {
     if ((cordOut - cordIn) > limitmax) {
       return limitmax;
@@ -52,7 +43,6 @@ window.utils = (() => {
     randomInteger: randomInteger,
     randomStrings: randomStrings,
     randomString: randomString,
-    syncroTime: syncroTime,
     targetDragLimiter: targetDragLimiter
   };
 

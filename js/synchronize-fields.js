@@ -53,23 +53,20 @@ window.syncronizeField = (() => {
     }
   };
 
-  const changeHandler = (event) => {
-    let target = event.target;
-    if (target.id === 'type') {
-      syncroPrice(target, price, 'minimum', { 0: 1000, 1: 0, 2: 5000, 3: 10000 });
-    };
-    if (target.id === 'timein') {
-      window.utils.syncroTime(target, timeout);
-    };
-    if (target.id === 'timeout') {
-      window.utils.syncroTime(target, timein);
-    };
-    if (target.id === 'room_number') {
-      syncroRoom(target, capacity);
-      //syncroRoom(target, capacity, {0:[2], 1:[2,1], 2:[0,1,2], 3:[3]});// не разобрался как унифицировать:(
-    };
+  const syncroTime = (master, slave) => {
+    slave.selectedIndex = -1;
+    for (let i = 0; i < master.options.length; i++) {
+      const element = master.options[i];
+      if (element.selected) {
+        slave.selectedIndex = element.index;
+      }
+    }
   };
 
-  return { changeHandler: changeHandler };
+  return {
+    syncroRoom: syncroRoom,
+    syncroPrice: syncroPrice,
+    syncroTime: syncroTime
+  };
 
 })();

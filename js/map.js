@@ -1,6 +1,7 @@
 'use strict';
 
 window.map = (() => {
+
   const dragObj = (target) => {  //migrate to mod drag.js
     target.addEventListener('mousedown', function (event) {
       let targetStartCords = {

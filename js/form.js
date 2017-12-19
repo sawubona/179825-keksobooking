@@ -1,12 +1,28 @@
 'use strict';
 
 window.formaction = (() => {
-  
+
+  const changeHandler = (event) => {
+    let target = event.target;
+    if (target.id === 'type') {
+      window.syncronizeField.syncroPrice(target, price, 'minimum', { 0: 1000, 1: 0, 2: 5000, 3: 10000 });
+    };
+    if (target.id === 'timein') {
+      window.syncronizeField.syncroTime(target, timeout);
+    };
+    if (target.id === 'timeout') {
+      window.syncronizeField.syncroTime(target, timein);
+    };
+    if (target.id === 'room_number') {
+      window.syncronizeField.syncroRoom(target, capacity);
+    };
+  };
+
   const formHandler = (event) => {
     let target = event.target;
     let option = target.closest('select');
     if (!option) return;
-    option.addEventListener('change', window.syncronizeField.changeHandler);
+    option.addEventListener('change', changeHandler);
   };
 
   const formValid = (event) => {
