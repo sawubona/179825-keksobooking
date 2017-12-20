@@ -1,6 +1,7 @@
 'use strict';
 
 window.pin = (() => {
+
   const mapWrapper = document.querySelector('.map__pins');
   const formElements = document.querySelectorAll('fieldset');
   const createButtons = () => {
@@ -19,7 +20,7 @@ window.pin = (() => {
       button_avatar.draggable = false;
       button.appendChild(button_avatar);
       fragment.appendChild(button);
-      window.mapdata.map.insertBefore(window.card.createCards(button.style.left, button.style.top, i, buttonAvatar), mapFilter);
+      window.mapdata.map.insertBefore(window.showCard.createCards(button.style.left, button.style.top, i, buttonAvatar), mapFilter);
     }
     mapWrapper.appendChild(fragment);
     disablePopup();

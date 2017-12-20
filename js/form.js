@@ -1,6 +1,51 @@
 'use strict';
 
 window.formaction = (() => {
+
+  const changeHandler = (event) => {
+    let target = event.target;
+    if (target.id === 'type') {
+      window.syncronizeField.syncroField(target, price, syncroPrice);
+    };
+    if (target.id === 'timein') {
+      window.syncronizeField.syncroField(target, timeout, syncroTime);
+    };
+    if (target.id === 'timeout') {
+      window.syncronizeField.syncroField(target, timein, syncroTime);
+    };
+    if (target.id === 'room_number') {
+      window.syncronizeField.syncroField(target, capacity, syncroRoom);
+    };
+  };
+
+  const formHandler = (event) => {
+    let target = event.target;
+    let option = target.closest('select');
+    if (!option) return;
+    option.addEventListener('change', changeHandler);
+  };
+
+  const formValid = (event) => {
+    let inputs = noticeForm.querySelectorAll('input');
+    for (let i = 0; i < inputs.length; i++) {
+      const element = inputs[i];
+      if (element.id === 'address' && element.value === '') {
+        element.style.border = '2px solid red';
+        event.preventDefault();
+      }
+      if (element.id === 'title' && element.value.length < 30) {
+        element.style.border = '2px solid red';
+        event.preventDefault();
+      }
+      if (element.id === 'price' && element.value.length < 0) {
+        element.style.border = '2px solid red';
+        event.preventDefault();
+      }
+    }
+  };
+
+  /*----------------------*/
+
   const syncroRoom = (master, slave) => {
     slave.selectedIndex = -1;
     for (let i = 0; i < master.options.length; i++) {
@@ -38,55 +83,27 @@ window.formaction = (() => {
     }
   };
 
-  const changeHandler = (event) => {
-    let target = event.target;
-    if (target.id === 'type') {
-      if (target.selectedIndex === 0) {
-        price.min = 1000;
-      }
-      if (target.selectedIndex === 1) {
-        price.min = 0;
-      }
-      if (target.selectedIndex === 2) {
-        price.min = 5000;
-      }
-      if (target.selectedIndex === 3) {
-        price.min = 10000;
-      }
-    };
-    if (target.id === 'timein') {
-      window.utils.syncroTime(target, timeout);
-    };
-    if (target.id === 'timeout') {
-      window.utils.syncroTime(target, timein);
-    };
-    if (target.id === 'room_number') {
-      syncroRoom(target, capacity);
-    };
+  const syncroPrice = (master, slave) => {
+    if (master.selectedIndex === 0) {
+      slave.min = 1000;
+    }
+    if (master.selectedIndex === 1) {
+      slave.min = 0;
+    }
+    if (master.selectedIndex === 2) {
+      slave.min = 5000;
+    }
+    if (master.selectedIndex === 3) {
+      slave.min = 10000;
+    }
   };
 
-  const formHandler = (event) => {
-    let target = event.target;
-    let option = target.closest('select');
-    if (!option) return;
-    option.addEventListener('change', changeHandler);
-  };
-
-  const formValid = (event) => {
-    let inputs = noticeForm.querySelectorAll('input');
-    for (let i = 0; i < inputs.length; i++) {
-      const element = inputs[i];
-      if (element.id === 'address' && element.value === '') {
-        element.style.border = '2px solid red';
-        event.preventDefault();
-      }
-      if (element.id === 'title' && element.value.length < 30) {
-        element.style.border = '2px solid red';
-        event.preventDefault();
-      }
-      if (element.id === 'price' && element.value.length < 0) {
-        element.style.border = '2px solid red';
-        event.preventDefault();
+  const syncroTime = (master, slave) => {
+    slave.selectedIndex = -1;
+    for (let i = 0; i < master.options.length; i++) {
+      const element = master.options[i];
+      if (element.selected) {
+        slave.selectedIndex = element.index;
       }
     }
   };
