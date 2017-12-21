@@ -25,22 +25,19 @@ window.formaction = (() => {
     option.addEventListener('change', changeHandler);
   };
 
-  const formValid = (event) => {
-    let inputs = noticeForm.querySelectorAll('input');
-    for (let i = 0; i < inputs.length; i++) {
-      const element = inputs[i];
-      if (element.id === 'address' && element.value === '') {
-        element.style.border = '2px solid red';
-        event.preventDefault();
-      }
-      if (element.id === 'title' && element.value.length < 30) {
-        element.style.border = '2px solid red';
-        event.preventDefault();
-      }
-      if (element.id === 'price' && element.value.length < 0) {
-        element.style.border = '2px solid red';
-        event.preventDefault();
-      }
+  const sendForm = (event) => {
+    event.preventDefault();
+    if (!address.validity.valid) {
+      return;
+    }
+    if (!title.validity.valid) {
+      return;
+    }
+    if (!price.validity.valid) {
+      return;
+    } else {
+      let formData = new FormData(window.mapdata.noticeForm);
+      window.backend.sendForm(window.mapdata.urlForm, formData);
     }
   };
 
@@ -109,8 +106,8 @@ window.formaction = (() => {
   };
 
   return {
-    formHandler: formHandler,
-    formValid: formValid
+    formHandler,
+    sendForm
   };
 
 })();
