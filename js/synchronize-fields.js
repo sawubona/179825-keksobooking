@@ -6,6 +6,6 @@ window.syncronizeField = (() => {
     callback(target, source);
   };
 
-  return { syncroField: syncroField };
+  return { syncroField };
 
 })();

@@ -2,8 +2,8 @@
 
 window.card = (() => {
 
-  const createFeatureList = () => {
-    let featuresArr = window.utils.randomStrings(window.mapdata.mapData.features);
+  const createFeatureList = (obj) => {
+    let featuresArr = obj.offer.features;
     let featuresFragment = document.createDocumentFragment();
     for (let i = 0; i < featuresArr.length; i++) {
       let featureElem = document.createElement('li');
@@ -13,6 +13,27 @@ window.card = (() => {
     return featuresFragment;
   };
 
-  return { createFeatureList: createFeatureList };
+  const createFotoList = (obj) => {
+    let fotoArr = obj.offer.photos;
+    let fotoFragment = document.createDocumentFragment();
+    for (let i = 0; i < fotoArr.length; i++) {
+      let fotoElem = document.createElement('li');
+      fotoElem.style.overflow = 'hidden';
+      fotoElem.style.width = '20%';
+      let imgElem = document.createElement('img');
+      imgElem.src = fotoArr[i];
+      imgElem.style.display = 'inline-block';
+      imgElem.style.width = '100%';
+      imgElem.style.padding = '3px';
+      fotoElem.appendChild(imgElem);
+      fotoFragment.appendChild(fotoElem);
+    }
+    return fotoFragment;
+  };
+
+  return {
+    createFeatureList,
+    createFotoList
+  };
 
 })();

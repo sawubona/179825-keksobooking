@@ -4,26 +4,34 @@ window.pin = (() => {
 
   const mapWrapper = document.querySelector('.map__pins');
   const formElements = document.querySelectorAll('fieldset');
-  const createButtons = () => {
+
+  const createButtons = (obj) => {
     const mapFilter = document.querySelector('.map__filters-container');
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < window.mapdata.mapData.avatar.length; i++) {
-      let buttonAvatar = window.mapdata.mapData.avatar[i];
+    for (let i = 0; i < obj.length; i++) {
+      const element = obj[i];
+      /*if(i>4)
+      continue*/
+      let buttonAvatar = element.author.avatar;
       let button = document.createElement('button');
       let button_avatar = document.createElement('img');
       button.className = 'map__pin';
-      button.style.left = `${window.utils.randomInteger(window.mapdata.mapData.locations[0]) - 20}px`;
-      button.style.top = `${window.utils.randomInteger(window.mapdata.mapData.locations[1]) - 20}px`;
+      button.style.left = `${element.location.x - 20}px`;
+      button.style.top = `${element.location.y - 20}px`;
       button_avatar.src = buttonAvatar;
       button_avatar.style.width = `${40}px`;
       button_avatar.style.height = `${40}px`;
       button_avatar.draggable = false;
       button.appendChild(button_avatar);
       fragment.appendChild(button);
-      window.mapdata.map.insertBefore(window.showCard.createCards(button.style.left, button.style.top, i, buttonAvatar), mapFilter);
+      window.mapdata.map.insertBefore(window.showCard.createCards(element), mapFilter);
     }
     mapWrapper.appendChild(fragment);
     disablePopup();
+  };
+
+  const onSuccess = (data) => {
+    createButtons(data);
   };
 
   const toggleForm = (list, state = 'off') => {
@@ -44,7 +52,7 @@ window.pin = (() => {
 
   const activateFormMap = (targetbtn) => {
     window.mapdata.map.classList.remove('map--faded');
-    createButtons();
+    backend.load(onSuccess, window.message.infoMessage);
     window.map.dragObj(targetbtn);
     targetbtn.classList.add('active');
     toggleForm(formElements, 'on');
@@ -123,8 +131,8 @@ window.pin = (() => {
   };
 
   return {
-    mainpinMouseHandler: mainpinMouseHandler,
-    mainpinTabHandler: mainpinTabHandler
+    mainpinMouseHandler,
+    mainpinTabHandler
   };
 
 })();
