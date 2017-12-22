@@ -9,9 +9,10 @@ window.pin = (() => {
     const mapFilter = document.querySelector('.map__filters-container');
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < obj.length; i++) {
+      if (i > 4) {
+        continue;
+      };
       const element = obj[i];
-      /*if(i>4)
-      continue*/
       let buttonAvatar = element.author.avatar;
       let button = document.createElement('button');
       let button_avatar = document.createElement('img');
@@ -131,6 +132,7 @@ window.pin = (() => {
   };
 
   return {
+    createButtons,
     mainpinMouseHandler,
     mainpinTabHandler
   };
