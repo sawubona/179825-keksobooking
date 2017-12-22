@@ -25,6 +25,10 @@ window.formaction = (() => {
     option.addEventListener('change', changeHandler);
   };
 
+  const onSuccess = () => {
+    window.mapdata.noticeForm.reset();
+  };
+
   const sendForm = (event) => {
     event.preventDefault();
     if (!address.validity.valid) {
@@ -37,7 +41,7 @@ window.formaction = (() => {
       return;
     } else {
       let formData = new FormData(window.mapdata.noticeForm);
-      window.backend.sendForm(window.mapdata.urlForm, formData);
+      backend.save(formData, onSuccess, window.message.infoMessage);
     }
   };
 

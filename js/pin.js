@@ -10,6 +10,8 @@ window.pin = (() => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < obj.length; i++) {
       const element = obj[i];
+      /*if(i>4)
+      continue*/
       let buttonAvatar = element.author.avatar;
       let button = document.createElement('button');
       let button_avatar = document.createElement('img');
@@ -28,16 +30,8 @@ window.pin = (() => {
     disablePopup();
   };
 
-  const createData = (link) => {
-    const dataPromise = new Promise((resolve) => {
-      let pindata = window.backend.getData(link);
-      resolve(pindata);
-    });
-
-    dataPromise
-      .then((data) => {
-        createButtons(data);
-      })
+  const onSuccess = (data) => {
+    createButtons(data);
   };
 
   const toggleForm = (list, state = 'off') => {
@@ -58,7 +52,7 @@ window.pin = (() => {
 
   const activateFormMap = (targetbtn) => {
     window.mapdata.map.classList.remove('map--faded');
-    createData(window.mapdata.urlData);
+    backend.load(onSuccess, window.message.infoMessage);
     window.map.dragObj(targetbtn);
     targetbtn.classList.add('active');
     toggleForm(formElements, 'on');

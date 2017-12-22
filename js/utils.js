@@ -52,18 +52,6 @@ window.utils = (() => {
     }
   };
 
-  /*const showError = (message) => {
-    let errorBlock = document.createElement('div');
-    errorBlock.style.position = 'absolute';
-    errorBlock.style.width = '25%';
-    errorBlock.style.height = '25%'
-    errorBlock.style.backgroundColor = 'red';
-    errorBlock.style.left = '37.5%';
-    errorBlock.style.top = '37.5%';
-    window.mapdata.map.appendChild(errorBlock);
-    console.log(message);
-  };*/
-
   return {
     //randomInteger,
     //randomStrings,
