@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (() => {
+window.pin = (function () {
 
   const mapWrapper = document.querySelector('.map__pins');
   const formElements = document.querySelectorAll('fieldset');

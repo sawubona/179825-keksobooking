@@ -1,6 +1,6 @@
 'use strict';
 
-window.card = (() => {
+window.card = (function () {
 
   const createFeatureList = (obj) => {
     let featuresArr = obj.offer.features;

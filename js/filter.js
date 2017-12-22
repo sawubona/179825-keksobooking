@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (() => {
+window.pin = (function () {
 
   const filterForm = document.querySelector('.map__filters');
   const featuresBtns = filterForm.querySelectorAll('.feature input');

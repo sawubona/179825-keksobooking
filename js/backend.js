@@ -1,6 +1,6 @@
 'use strict';
 
-window.backend = (() => {
+window.backend = (function () {
 
   const url = 'https://js.dump.academy/keksobooking';
   let cacheControl = [];//localStorage.setItem('data', response);

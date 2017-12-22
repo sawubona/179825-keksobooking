@@ -1,6 +1,6 @@
 'use strict';
 
-window.syncronizeField = (() => {
+window.syncronizeField = (function () {
 
   const syncroField = (target, source, callback) => {
     callback(target, source);

@@ -1,6 +1,6 @@
 'use strict';
 
-window.showCard = (() => {
+window.showCard = (function () {
 
   const createCards = (obj) => {
     const fragment = document.createDocumentFragment();

@@ -1,6 +1,6 @@
 'use strict';
 
-window.formaction = (() => {
+window.formaction = (function () {
 
   const changeHandler = (event) => {
     let target = event.target;

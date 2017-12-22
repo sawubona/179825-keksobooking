@@ -1,6 +1,6 @@
 'use strict';
 
-window.message = (() => {
+window.message = (function () {
   
  const infoMessage = (msg) => {
    let dialog = document.querySelector('dialog');
