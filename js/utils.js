@@ -27,6 +27,10 @@ window.utils = (() => {
     }
   };*/
 
+  const crawler = (arr, fn) => {
+    Array.prototype.forEach.call(arr, fn);
+  };
+
   const routingType = (type) => {
     let targetType = type.offer.type;
     if (targetType === 'flat') {
@@ -52,11 +56,23 @@ window.utils = (() => {
     }
   };
 
+  const debounce = (targfun) => {
+    let timeout = null;
+    return () => {
+      if (timeout !== null) {
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(targfun, 500);
+    };
+  };
+
   return {
     //randomInteger,
     //randomStrings,
     //randomString,
     //showError,
+    crawler,
+    debounce,
     targetDragLimiter,
     routingType
   };
